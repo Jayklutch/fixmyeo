@@ -1,5 +1,5 @@
-# Cloudless software for the EO Smart Home Hub/Mini and Mini Pro 2 EV charger
-EO Charging announced in July 2025 that their EO Smart Home app is being discontinued on November 30th 2025. This disables the ability for owners to set automated timed schedules and to directly manage their device, which will then operate purely as a "plug & play" charger. This project aims to provide an alternate, open source software that can be directly installed on these devices to allow control from the local WiFi network without the use of the EO Cloud. 
+# Hacked Firmware for EO Mini Pro 2 EVSE
+EO are knobs and announced in July 2025 that their EO Smart Home app is being discontinued on November 30th 2025. This disables the ability for owners to set automated timed schedules and to directly manage their device, which will then operate purely as a dumb charger. This firmware is an alternate, open source software that can be directly installed on these devices to allow control from the local WiFi network without the use of the cloud. 
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/e4592063-7f7b-485f-af75-c6b6009f6c96" style="width:25%; height:auto;"  />
@@ -7,42 +7,31 @@ EO Charging announced in July 2025 that their EO Smart Home app is being discont
 </p>
 
 ## Compatibility
-This project has been designed to be compatible with the EO Smart Home Hub/Mini and EO "Mini Pro 2" devices. It does **not** support "Mini Pro 3"
+This project has been designed for the EO Smart Home Hub/Mini and EO "Mini Pro 2" devices. It does **not** support "Mini Pro 3"
 
-### [Smart Home Hub/Mini](https://github.com/user-attachments/files/22066221/EO_Home_Hub.pdf)
-<p align="center">
-<img src="https://github.com/user-attachments/assets/1ad1ba51-ef88-4cb6-9a99-9f922e32f02c" style="width:25%; height:auto;" />
-<img src="https://github.com/user-attachments/assets/62a2e6cc-128f-49bd-8265-9c09de2d08fe" style="width:25%; height:auto;" />
-  
-</p>
 
-### [Mini Pro 2](https://github.com/user-attachments/files/22066224/eo-mini-pro-2-installation-and-userguide.pdf)
-<p align="center">
-<img src="https://github.com/user-attachments/assets/5488462c-a5c6-44c0-843b-16ec874e846a" style="width:25%; height:auto;" />
-</p>
+## Install Instructions.
 
-## Install Instructions
-This software can be installed onto a Raspberry OS Lite install. We recommend that you keep your original EO SD card safe and separate, so that you can revert easily, should things don't work out for you.
-
-1. Obtain a 8GB (or larger) SD card
-2. Flash the SD card with the Raspberry PI imager (Device: Raspberry Pi 3 for Home Hub and Raspberry Pi Zero for Mini Pro 2, Operating System: Raspberry PI OS Lite (32 bit))
+Step 1, Power down your EO mini Pro 2 and open the cover. 
+Step 2, Remove the micro SD card and place it somewhere safe.
+Step 3, Obtain a new 8GB (or larger) micro SD card
+Step 4, Flash the SD card with the Raspberry PI imager (Device: Raspberry Pi 3 for Home Hub and Raspberry Pi Zero for Mini Pro 2, Operating System: Raspberry PI OS Lite (32 bit))
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/58fc15c4-ed2e-403d-b8f1-7e83a6c8c2b7" style="width:25%; height:auto;" />
 <img src="https://github.com/user-attachments/assets/db492985-58e3-4b18-8bb2-5eb0fb31cb6d" style="width:25%; height:auto;" />
 </p>
 
-3. In the Raspberry PI imager "General" settings - set your Hostname, Username/Password, Wirelss LAN and Locale settings as appropriate. There are no restrictions on what to set your hostname, but you must create a user of "pi"
+Step 5, In the Raspberry PI imager "General" settings - set your Hostname, Username/Password, Wirelss LAN and Locale settings as appropriate. There are no restrictions on what to set your hostname, but you must create a user of "pi"
 
 <p align="center"><img  alt="image" src="https://github.com/user-attachments/assets/da0e365a-141b-4f70-8be8-5f23a900dfa3" style="width:25%; height:auto;"/></p>
 
-4. In the Raspberry PI imager "Services" settings - ensure that SSH is enabled, and I would recommend that public-key authentication is enabled, and you should add your SSH public key as approprate.
+Step 6, In the Raspberry PI imager "Services" settings - ensure that SSH is enabled, and I would recommend that public-key authentication is enabled, and you should add your SSH public key as approprate.
 
 <p align="center"><img alt="Screenshot 2025-07-19 142824" src="https://github.com/user-attachments/assets/d4768f5d-19f3-4355-a44e-6216e492dc30" style="width:25%; height:auto;" />
 </p>
 
-5. *IMPORTANT* Once the new SD card has been created, remove power to your EO box by disconnecting it or by switching off the relevant breaker in your consumer unit. Please ensure that it is completely isolated from the mains electricity. *If you are unsure that the electricity is fully disconnected, then do not proceed*.
-6. Open the Smart Hub or Mini Pro 2 box by loosening the four captive screws that are visible on the front of the case (you may need to remove the four rubber covers, if they are fitted), and you will see the Raspberry Pi inside (Smart Hub is a Raspberry Pi 3, and the Mini Pro 2 is a smaller Raspberry Pi Zero). You can now switch the SD cards, keeping the original safe. Whilst you are doing this, on the Mini Pro 2, take care to not accidentally dislodge the cables connecting the raspberry pi board with the main control board in the lid of the unit.
+Step 7, You can now insert the new micro SD card. Whilst you are doing this, on the Mini Pro 2, take care to not accidentally dislodge the cables connecting the raspberry pi board with the main control board in the lid of the unit.
 
 <table style="width:80%"><tr><td>
 <p align="center">
@@ -57,8 +46,8 @@ This software can be installed onto a Raspberry OS Lite install. We recommend th
 </figure>
 </p>
 </td></tr></table>
-7. Close the EO enclosure, and apply power to it. The Raspberry Pi should boot, and if you got the configuration correct in step #3 above, it will then join your wireless network and you can log in with SSH (you should be able to find the RPi IP address from your broadband router). Note that the first time that you power up with a fresh SD card, it will take about five minutes to fully boot before it is seen on the network.
-8. Log onto your account on the RPi via SSH (e.g. PuTTY) over the WiFi network, and run the following commands. This will download the software from github and run the installation process, then reboots your RPi to allow the software to finish configuring and start up.
+Step 8, Close the EO enclosure, and apply power to it. The Raspberry Pi should boot, and if you got the configuration correct in step #3 above, it will then join your wireless network and you can log in with SSH (you should be able to find the RPi IP address from your broadband router). Note that the first time that you power up with a fresh SD card, it will take about five minutes to fully boot before it is seen on the network.
+Step 9, Log onto your account on the RPi via SSH (e.g. PuTTY) over the WiFi network, and run the following commands. This will download the software from github and run the installation process, then reboots your RPi to allow the software to finish configuring and start up.
 
 ~~~~
 curl -sSL https://github.com/Jayklutch/fixmyeo/raw/refs/heads/main/openeo_download.py | python3 -
