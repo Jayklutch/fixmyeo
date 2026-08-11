@@ -1,5 +1,145 @@
 @import "tailwindcss";
 
+:root {
+  --eo-void: #0a0d12;
+  --eo-panel: #131a21;
+  --eo-panel-raised: #1a2129;
+  --eo-border: rgba(148, 178, 204, 0.14);
+  --eo-border-strong: rgba(148, 178, 204, 0.3);
+  --eo-accent: #2dd4c8;
+  --eo-accent-dim: rgba(45, 212, 200, 0.14);
+  --eo-text: #e8eef4;
+  --eo-text-dim: #7c8fa1;
+  --eo-grid: #5aa7f2;
+  --eo-solar: #f2c14e;
+  --eo-vehicle: #3ecf8e;
+  --eo-danger: #ef5d6f;
+  --eo-font-ui: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --eo-font-mono: ui-monospace, 'Cascadia Code', 'Roboto Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+.eo-mono {
+  font-family: var(--eo-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* Instrument-panel card: dark surface + faint corner brackets, like a bezel */
+.eo-card {
+  position: relative;
+  background:
+    linear-gradient(180deg, var(--eo-panel-raised) 0%, var(--eo-panel) 70px, var(--eo-panel) 100%);
+  border: 1px solid var(--eo-border);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.eo-card::before,
+.eo-card::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.eo-card::before {
+  top: 10px;
+  left: 10px;
+  border-top: 1.5px solid var(--eo-accent);
+  border-left: 1.5px solid var(--eo-accent);
+}
+
+.eo-card::after {
+  bottom: 10px;
+  right: 10px;
+  border-bottom: 1.5px solid var(--eo-accent);
+  border-right: 1.5px solid var(--eo-accent);
+}
+
+/* Small tracked uppercase label with a status dot, top of each card */
+.eo-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--eo-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--eo-text-dim);
+}
+
+.eo-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--eo-accent);
+  box-shadow: 0 0 8px var(--eo-accent);
+}
+
+.eo-eyebrow-dot.is-idle {
+  background: var(--eo-text-dim);
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes eo-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.eo-eyebrow-dot.is-live {
+  animation: eo-pulse 1.8s ease-in-out infinite;
+}
+
+/* Instrument-style button: flat, bordered, tracked uppercase text */
+.eo-btn {
+  font-family: var(--eo-font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--eo-border-strong);
+  background: var(--eo-panel-raised);
+  color: var(--eo-text);
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.eo-btn:hover {
+  border-color: var(--eo-accent);
+  color: var(--eo-accent);
+}
+
+.eo-btn-accent {
+  background: var(--eo-accent-dim);
+  border-color: var(--eo-accent);
+  color: var(--eo-accent);
+}
+
+.eo-btn-accent:hover {
+  background: var(--eo-accent);
+  color: #06201d;
+}
+
+.eo-btn-solar {
+  background: rgba(242, 193, 78, 0.12);
+  border-color: var(--eo-solar);
+  color: var(--eo-solar);
+}
+
+.eo-btn-solar:hover {
+  background: var(--eo-solar);
+  color: #241a02;
+}
+
+.eo-btn:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
 .bottom-objects-flex {
 	position: absolute;
 	left: 0;

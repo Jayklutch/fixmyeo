@@ -84,6 +84,47 @@ function arcPath(cx, cy, r, startMin, endMin) {
   return `M ${sx} ${sy} A ${r} ${r} 0 ${largeArc} ${sweep} ${ex} ${ey}`;
 }
 
+// Instrument-dial tick marks: short radial lines every 30 minutes, longer/brighter every 3 hours,
+// with hour labels at 00/06/12/18 — matches the Charge Timer dial for a consistent dashboard feel.
+function DialTicks({ cx, cy, r }) {
+  const ticks = [];
+  for (let m = 0; m < 1440; m += 30) {
+    const isMajor = m % 180 === 0;
+    const a = (minutesToAngle(m) * Math.PI) / 180;
+    const rOuter = r + 14;
+    const rInner = rOuter - (isMajor ? 10 : 5);
+    const x1 = cx + rInner * Math.cos(a);
+    const y1 = cy + rInner * Math.sin(a);
+    const x2 = cx + rOuter * Math.cos(a);
+    const y2 = cy + rOuter * Math.sin(a);
+    ticks.push(
+      <line
+        key={m}
+        x1={x1} y1={y1} x2={x2} y2={y2}
+        stroke={isMajor ? "rgba(232,238,244,0.55)" : "rgba(232,238,244,0.22)"}
+        strokeWidth={isMajor ? 2 : 1}
+        strokeLinecap="round"
+      />
+    );
+    if (isMajor) {
+      const rLabel = rOuter + 16;
+      ticks.push(
+        <text
+          key={`${m}-label`}
+          x={cx + rLabel * Math.cos(a)}
+          y={cy + rLabel * Math.sin(a) + 4}
+          textAnchor="middle"
+          className="unselectable"
+          style={{ fontSize: 11, fill: "var(--eo-text-dim)", fontFamily: "var(--eo-font-mono)" }}
+        >
+          {pad2(m / 60)}
+        </text>
+      );
+    }
+  }
+  return <g>{ticks}</g>;
+}
+
 // --- SolarTimer component ---
 export default function SolarTimer({
   schedule,
@@ -164,11 +205,14 @@ export default function SolarTimer({
       <p><b>Reservation</b> allows the OpenEO to hold some power in reserve for the rest of your house, rather than using <b>all</b> generated power for charging your car.</p>
     </HelpModal>
   </div>
-    <div className="absolute top-0  items-center justify-center text-white/80 text-3xl font-semibold unselectable mt-5">
+    <div className="absolute top-0 left-0 right-0 flex justify-center mt-5 unselectable">
+      <span className="eo-eyebrow">
+        <span className={`eo-eyebrow-dot ${timersActive ? "is-live" : "is-idle"}`} style={timersActive ? { background: "var(--eo-solar)", boxShadow: "0 0 8px var(--eo-solar)" } : undefined} />
         Solar Timer
+      </span>
     </div>
 
-      { !timersActive ? (<h1>INACTIVE</h1>) : (<></>)}
+      { !timersActive ? (<div className="absolute top-9 eo-mono text-xs" style={{ color: "var(--eo-danger)", letterSpacing: "0.1em" }}>INACTIVE</div>) : (<></>)}
       <svg
         ref={svgRef}
         viewBox={`0 0 ${size} ${size}`}
@@ -187,8 +231,11 @@ export default function SolarTimer({
         {/* soft backdrop */}
         <circle cx={cx} cy={cy} r={radius + 40} fill="url(#glow)" />
 
+        {/* dial ticks */}
+        <DialTicks cx={cx} cy={cy} r={radius} />
+
         {/* base ring */}
-        <circle cx={cx} cy={cy} r={radius} className="stroke-white" strokeWidth={4} fill="none" />
+        <circle cx={cx} cy={cy} r={radius} stroke="rgba(232,238,244,0.18)" strokeWidth={2} fill="none" />
 
         {/* active arc */}
         {gradientArcSegments(cx, cy, radius, schedule.start, schedule.end, 120)}
@@ -222,12 +269,12 @@ export default function SolarTimer({
         </g>
 
         {/* center text */}
-        <g>
-          <text x={cx} y={cy - 6} textAnchor="middle" className="fill-white/80 unselectable" style={{ fontSize: 30, fontWeight: 600 }}>
-            Start: <tspan className="fill-white unselectable" style={{ fontWeight: 800 }}>{minutesToHHMM(schedule.start)}</tspan>
+        <g style={{ fontFamily: "var(--eo-font-mono)" }}>
+          <text x={cx} y={cy - 6} textAnchor="middle" className="unselectable" style={{ fontSize: 15, fontWeight: 500, fill: "var(--eo-text-dim)", letterSpacing: "0.08em" }}>
+            START <tspan style={{ fontSize: 26, fontWeight: 700, fill: "#fde047" }}>{minutesToHHMM(schedule.start)}</tspan>
           </text>
-          <text x={cx} y={cy + 28} textAnchor="middle" className="fill-white/80 unselectable" style={{ fontSize: 30, fontWeight: 600 }}>
-            End: <tspan className="fill-white unselectable" style={{ fontWeight: 800 }}>{minutesToHHMM(schedule.end)}</tspan>
+          <text x={cx} y={cy + 28} textAnchor="middle" className="unselectable" style={{ fontSize: 15, fontWeight: 500, fill: "var(--eo-text-dim)", letterSpacing: "0.08em" }}>
+            END <tspan style={{ fontSize: 26, fontWeight: 700, fill: "#f59e0b" }}>{minutesToHHMM(schedule.end)}</tspan>
           </text>
         </g>
       </svg>

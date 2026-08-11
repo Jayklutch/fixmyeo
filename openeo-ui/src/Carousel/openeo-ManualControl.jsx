@@ -15,8 +15,11 @@ export default function ManualControl({ schedule, onChange, onCommit,setTimersAc
     <p><b>Charging Enabled/Disabled</b> When set to "Enabled", this will immediately enable charging, regardless of any timed schedules defined.</p>
     <p>Use the <b>amp slider</b> to control the maximum charging current when manually charging.</p>
   </HelpModal>
-  <div className="absolute top-0  items-center justify-center text-white/80 text-3xl font-semibold unselectable mt-5">
-    Manual Control
+  <div className="absolute top-0 left-0 right-0 flex justify-center mt-5 unselectable">
+    <span className="eo-eyebrow">
+      <span className={`eo-eyebrow-dot ${schedule.enabled ? "is-live" : "is-idle"}`} />
+      Manual Control
+    </span>
   </div>
 
   <Toggle
@@ -30,8 +33,8 @@ export default function ManualControl({ schedule, onChange, onCommit,setTimersAc
       }
     }}
   />
-  <div className="text-white/80 mb-2">
-    Timers {schedule.scheduler_enabled ? "Enabled" : "Disabled"}
+  <div className="eo-mono text-sm mb-2" style={{ color: "var(--eo-text-dim)" }}>
+    Timers <span style={{ color: schedule.scheduler_enabled ? "var(--eo-accent)" : "var(--eo-text-dim)" }}>{schedule.scheduler_enabled ? "Enabled" : "Disabled"}</span>
   </div>
   
   <Toggle
@@ -45,8 +48,8 @@ export default function ManualControl({ schedule, onChange, onCommit,setTimersAc
     }}
   />
 
-  <div className="text-white/80 mb-3" > 
-    Charging {schedule.enabled ? "Enabled" : "Disabled"}
+  <div className="eo-mono text-sm mb-3" style={{ color: "var(--eo-text-dim)" }}>
+    Charging <span style={{ color: schedule.enabled ? "var(--eo-vehicle)" : "var(--eo-text-dim)" }}>{schedule.enabled ? "Enabled" : "Disabled"}</span>
   </div>
 
      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] mb-[5px]">

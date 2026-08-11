@@ -53,22 +53,31 @@ export default function StatusPanel(
     <>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
-      {!status ? ( <p>Loading…</p> ) : (
+      {!status ? ( <p className="eo-mono" style={{ color: "var(--eo-text-dim)" }}>Loading…</p> ) : (
 
       <>
-        <div className="status-info flex justify-center items-center">
+        <div
+          className="status-info flex justify-center items-center flex-wrap"
+          style={{
+            background: "var(--eo-panel)",
+            border: "1px solid var(--eo-border)",
+            borderRadius: "12px",
+            padding: "10px 18px",
+          }}
+        >
           {!status.eo_connected_to_controller ? (
-            <span className="status-item">Waiting..</span>
+            <span className="status-item eo-mono" style={{ color: "var(--eo-text-dim)" }}>Waiting…</span>
           ) : (
             <span
-              className={`status-item flex items-center gap-1 ${
-                FriendlyState(status) === "Charging" ? "status-charging" : "status-other"
-              }`}
+              className="status-item flex items-center gap-1.5"
+              style={{
+                color: FriendlyState(status) === "Charging" ? "var(--eo-vehicle)" : "var(--eo-text)",
+                fontWeight: 600,
+              }}
             >
               {FriendlyState(status)}
-              {status.eo_solar_active}
               <div className="relative group inline-block">
-              {status.eo_solar_active == true && status.eo_solar_charge_current > 0 && (<Sun size={18} className="text-yellow-400 cursor-help" />)}
+              {status.eo_solar_active == true && status.eo_solar_charge_current > 0 && (<Sun size={16} style={{ color: "var(--eo-solar)" }} className="cursor-help" />)}
                 <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 
                    w-max max-w-xs bg-gray-800 text-white text-xs rounded px-2 py-1
                    opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
@@ -77,7 +86,7 @@ export default function StatusPanel(
               </div>
 
               <div className="relative group inline-block">
-              {status.eo_solar_active == true && status.eo_solar_charge_current == 0 && (<CloudSun size={18} className="text-yellow-500 cursor-help" />)}
+              {status.eo_solar_active == true && status.eo_solar_charge_current == 0 && (<CloudSun size={16} style={{ color: "var(--eo-solar)" }} className="cursor-help" />)}
                 <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 
                    w-max max-w-xs bg-gray-800 text-white text-xs rounded px-2 py-1
                    opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
@@ -87,17 +96,17 @@ export default function StatusPanel(
             </span>
           )}
 
-          <span className="status-item">{Math.round(status.eo_current_vehicle)}/{Math.round(status.eo_amps_requested)}A</span>
-          <span className="status-item">{Math.round(status.eo_live_voltage)}V</span>
-          <span className="status-item">{Number(Math.round(10*status.eo_power_delivered)/10).toFixed(1)}kW</span>
-          <span className="status-item">{Number(Math.round(10*status.eo_session_kwh)/10).toFixed(1)}kWh</span>
-          <span className="status-item">{status.eo_localtime}</span>
+          <span className="status-item eo-mono" style={{ color: "var(--eo-text)" }}>{Math.round(status.eo_current_vehicle)}/{Math.round(status.eo_amps_requested)}A</span>
+          <span className="status-item eo-mono" style={{ color: "var(--eo-text)" }}>{Math.round(status.eo_live_voltage)}V</span>
+          <span className="status-item eo-mono" style={{ color: "var(--eo-text)" }}>{Number(Math.round(10*status.eo_power_delivered)/10).toFixed(1)}kW</span>
+          <span className="status-item eo-mono" style={{ color: "var(--eo-text)" }}>{Number(Math.round(10*status.eo_session_kwh)/10).toFixed(1)}kWh</span>
+          <span className="status-item eo-mono" style={{ color: "var(--eo-text-dim)" }}>{status.eo_localtime}</span>
         </div>
-        <div id="version-info" className="version-info">
+        <div id="version-info" className="version-info eo-mono" style={{ color: "var(--eo-text-dim)", fontSize: "11px", marginTop: "6px" }}>
           {status.openeo_latest_version === undefined || status.app_version === status.openeo_latest_version ? (
             <span id="statusVersion">openeo {status.app_version}</span>
           ) : (
-            <span id="statusVersion" style={{color: "red"}} onClick={() => (window.location.href="update.html")}>openeo {status.app_version} (Update Available)</span>
+            <span id="statusVersion" style={{color: "var(--eo-danger)", cursor: "pointer"}} onClick={() => (window.location.href="update.html")}>openeo {status.app_version} (Update Available)</span>
           )}
         </div>
       </>

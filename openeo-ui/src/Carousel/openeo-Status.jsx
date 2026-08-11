@@ -109,7 +109,7 @@ function Node({ cx, cy, icon, label, sublabel, color, size = 80 }) {
 
 function ChargerHub({ cx, cy, status, totalAmps }) {
   const isActive = status === "charging";
-  const color = isActive ? "#4ade80" : status === "connected" ? "#60a5fa" : "#94a3b8";
+  const color = isActive ? "#3ecf8e" : status === "connected" ? "#5aa7f2" : "#94a3b8";
   return (
     <g>
       {isActive && (
@@ -141,8 +141,8 @@ function ChargerHub({ cx, cy, status, totalAmps }) {
 function StatusBadge({ status, amps }) {
   const cfg = {
     idle:      { label: "Idle - Vehicle Disconnected",                         bg: "var(--color-background-secondary)", color: "var(--color-text-secondary)" },
-    connected: { label: "Idle - Vehicle Connected",                    bg: "#1e3a5f", color: "#60a5fa" },
-    charging:  { label: amps > 0 ? "Charging" : "Ready", bg: "#14532d", color: "#4ade80" },
+    connected: { label: "Idle - Vehicle Connected",                    bg: "#1e3a5f", color: "#5aa7f2" },
+    charging:  { label: amps > 0 ? "Charging" : "Ready", bg: "#123528", color: "#3ecf8e" },
   }[status] || {};
   return (
     <span style={{ fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 20,
@@ -194,9 +194,10 @@ export default function EVChargerStatus(
           width: "100%",
         },
         text: {
-          fontSize: "2rem",      // big friendly text
+          fontSize: "1.5rem",
           fontWeight: 600,
-          color: "#ccc",         // soft, friendly tone
+          color: "var(--eo-text-dim)",
+          fontFamily: "var(--eo-font-ui)",
           textAlign: "center",
         },
       };
@@ -287,13 +288,15 @@ export default function EVChargerStatus(
 
   return (
     <>
-    <div className="absolute top-0  items-center justify-center text-white/80 text-3xl font-semibold unselectable mt-5">
+    <div className="absolute top-0 left-0 right-0 flex justify-center mt-5 unselectable">
+      <span className="eo-eyebrow">
+        <span className={`eo-eyebrow-dot ${isCharging ? "is-live" : "is-idle"}`} />
         Status
+      </span>
     </div>
 
-    <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif",
-      background: "var(--color-background-primary)",
-      border: "0.5px solid var(--color-border-tertiary)",
+    <div style={{ fontFamily: "var(--eo-font-ui)",
+      background: "transparent",
       borderRadius: 16, padding: "24px 20px 20px",
       maxWidth: 460, margin: "0 auto" }}>
 
@@ -308,19 +311,19 @@ export default function EVChargerStatus(
       <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ overflow: "visible", display: "block" }}>
 
         {(gridAmps > 0 || !isCharging) && (
-          <FlowLine {...gridLine} color="#60a5fa"
+          <FlowLine {...gridLine} color="#5aa7f2"
             speed={flowSpeed * 1.1} width={lineWidth}
             active={isCharging && gridAmps > 0} amps={gridAmps}/>
         )}
 
         {solarLine && (
-          <FlowLine {...solarLine} color="#facc15"
+          <FlowLine {...solarLine} color="#f2c14e"
             speed={flowSpeed * 0.9} width={lineWidth}
             active={isCharging && solarAmps > 0} amps={solarAmps}/>
         )}
 
         {carLine && (
-          <FlowLine {...carLine} color="#4ade80"
+          <FlowLine {...carLine} color="#3ecf8e"
             speed={flowSpeed} width={lineWidth + 0.5}
             active={isCharging} amps={totalAmps}/>
         )}
@@ -329,18 +332,18 @@ export default function EVChargerStatus(
 
         <Node cx={gp.x} cy={gp.y} icon={<GridIcon size={32}/>}
           label="Grid" sublabel={gridAmps > 0 ? `${gridAmps} A` : "standby"}
-          color="#60a5fa"/>
+          color="#5aa7f2"/>
 
         {sp && (
           <Node cx={sp.x} cy={sp.y} icon={<SolarIcon size={32}/>}
             label="Solar" sublabel={solarAmps > 0 ? `${solarAmps} A` : "0 A"}
-            color="#facc15"/>
+            color="#f2c14e"/>
         )}
 
         {cp && (
           <Node cx={cp.x} cy={cp.y} icon={<CarIcon size={32}/>}
             label="Vehicle" sublabel={totalAmps > 0 ? `${totalAmps} A` : "connected"}
-            color="#4ade80"/>
+            color="#3ecf8e"/>
         )}
       </svg>
     </div>

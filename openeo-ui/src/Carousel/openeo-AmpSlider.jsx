@@ -67,27 +67,29 @@ export default function AmpSlider({ value, label="", min = 6, max = 32, onChange
 >
 
         {/* Track */}
-        <div className="absolute left-0 right-0 h-2 rounded-full bg-white/20" />
+        <div className="absolute left-0 right-0 h-1.5 rounded-full" style={{ background: "var(--eo-border-strong)" }} />
 
         {/* Active Track */}
         <div
-          className="absolute left-0 h-2 rounded-full bg-white"
-          style={{ width: `${percent}%` }}
+          className="absolute left-0 h-1.5 rounded-full"
+          style={{ width: `${percent}%`, background: "var(--eo-accent)" }}
         />
 
         {/* Thumb */}
         <div
-          className="absolute top-1/2 w-10 h-10 bg-white rounded-full shadow-lg"
+          className="absolute top-1/2 w-9 h-9 rounded-full shadow-lg border-2"
           style={{
-            left: `calc(${percent}% - 20px)`,
-            transform: "translateY(-50%)"
+            left: `calc(${percent}% - 18px)`,
+            transform: "translateY(-50%)",
+            background: "var(--eo-panel-raised)",
+            borderColor: "var(--eo-accent)",
           }}
         />
       </div>
 
       {/* Value display */}
-      <div className="w-full max-width container text-center text-white text-3xl font-semibold mt-0">
-        {value}A {label}
+      <div className="eo-mono w-full max-width container text-center text-3xl font-semibold mt-0" style={{ color: "var(--eo-text)" }}>
+        {value}<span style={{ color: "var(--eo-text-dim)", fontSize: "0.55em" }}>A</span>{label && <span className="eo-mono" style={{ fontSize: "0.4em", color: "var(--eo-text-dim)", letterSpacing: "0.08em", textTransform: "uppercase", marginLeft: "8px" }}>{label}</span>}
       </div>
     </div>
   );

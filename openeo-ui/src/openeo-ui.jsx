@@ -347,7 +347,7 @@ const translateX = `calc(50% - ${offset + itemWidth/2}px)`;
   return (
     <>
     <style>{uiCss}</style>
-    <div className="min-h-screen w-full bg-[#1e242b] text-white flex justify-center p-6 " id="mainDiv">
+    <div className="min-h-screen w-full text-white flex justify-center p-6" style={{ background: "var(--eo-void)", fontFamily: "var(--eo-font-ui)" }} id="mainDiv">
 
       <div className="w-full max-w-5xl">
 
@@ -358,7 +358,7 @@ const translateX = `calc(50% - ${offset + itemWidth/2}px)`;
                 
             {visibleSchedules.map((sch, i) => (
             <div key={sch.id} 
-                className={`flex items-center justify-center max-width shrink-0 w-[340px] sm:w-[380px] min-h-[442px] rounded-3xl bg-[#2b3139] ring-1 ring-white/10 p-5 backdrop-blur shadow-lg transition-all duration-500 ${i === active ? "scale-100 opacity-100" : "scale-90 brightness-60 cursor-pointer"}`}
+                className={`eo-card flex items-center justify-center max-width shrink-0 w-[340px] sm:w-[380px] min-h-[442px] rounded-2xl p-5 transition-all duration-500 ${i === active ? "scale-100 opacity-100" : "scale-90 brightness-60 cursor-pointer"}`}
                 onClick={() => { if (i !== active) setActive(i); }}
             >
                 {sch.type === STATUS_TYPE ? (
@@ -406,7 +406,8 @@ const translateX = `calc(50% - ${offset + itemWidth/2}px)`;
           <div className="absolute inset-y-0 -left-3 flex items-center">
             <button
               onClick={() => go(-1)}
-              className={`h-12 w-12 rounded-full grid place-items-center bg-white/10 hover:bg-white/20 transition ${hasPrev ? '' : 'opacity-40 pointer-events-none'}`}
+              className={`h-11 w-11 rounded-full grid place-items-center border transition ${hasPrev ? '' : 'opacity-30 pointer-events-none'}`}
+              style={{ background: "var(--eo-panel-raised)", borderColor: "var(--eo-border-strong)", color: "var(--eo-text)" }}
               aria-label="Previous schedule"
             >
               ‹
@@ -415,7 +416,8 @@ const translateX = `calc(50% - ${offset + itemWidth/2}px)`;
           <div className="absolute inset-y-0 -right-3 flex items-center">
             <button
               onClick={() => go(1)}
-              className={`h-12 w-12 rounded-full grid place-items-center bg-white/10 hover:bg-white/20 transition ${hasNext ? '' : 'opacity-40 pointer-events-none'}`}
+              className={`h-11 w-11 rounded-full grid place-items-center border transition ${hasNext ? '' : 'opacity-30 pointer-events-none'}`}
+              style={{ background: "var(--eo-panel-raised)", borderColor: "var(--eo-border-strong)", color: "var(--eo-text)" }}
               aria-label="Next schedule"
             >
               ›
@@ -426,19 +428,27 @@ const translateX = `calc(50% - ${offset + itemWidth/2}px)`;
         <div className="mt-1 flex justify-center gap-2 h-auto">
           
           { visibleSchedules.map((_, i) => (
-            <button key={i} onClick={() => setActive(i)} className={`h-2.5 w-2.5 rounded-full ${i === active ? 'bg-white' : 'bg-white/30 hover:bg-white/50'}`} />
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className="h-1.5 rounded-full transition-all"
+              style={{
+                width: i === active ? "22px" : "6px",
+                background: i === active ? "var(--eo-accent)" : "var(--eo-border-strong)",
+              }}
+            />
           ))}
         </div>
 
         {/* Add / Delete buttons */}
 
-        <div className="mt-1 flex items-center justify-center gap-2 h-auto">
+        <div className="mt-4 flex items-center justify-center gap-3 h-auto">
 
 
 { timersActive && (
           <button
             onClick={addSchedule}
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-500 to-fuchsia-500 text-white font-semibold shadow-lg hover:opacity-95 active:scale-98"
+            className="eo-btn eo-btn-accent"
           >
             + New Charge Timer
           </button>
@@ -447,7 +457,7 @@ const translateX = `calc(50% - ${offset + itemWidth/2}px)`;
 { solarActive && (
           <button
             onClick={addSchedule_solar}
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-semibold shadow-lg hover:opacity-95 active:scale-98"
+            className="eo-btn eo-btn-solar"
           >
             + New Solar Timer
           </button>
@@ -457,7 +467,7 @@ const translateX = `calc(50% - ${offset + itemWidth/2}px)`;
 
             <button
             onClick={removeActive}
-            className="px-5 py-3 rounded-2xl bg-white/10 text-white font-semibold shadow-lg hover:bg-white/20 disabled:opacity-40"
+            className="eo-btn"
             disabled={
                 schedules[active]?.type === "switch" || schedules.length === 0
             }
